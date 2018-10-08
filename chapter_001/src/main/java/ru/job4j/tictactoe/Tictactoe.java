@@ -16,12 +16,34 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
+/**
+ * Tictactoe.
+ */
 public class Tictactoe extends Application {
+    /**
+     * Title.
+     */
     private static final String JOB4J = "Крестики нолики...";
+    /**
+     * Size game.
+     */
     public static final int SIZE = 3;
+    /**
+     * Cells.
+     */
     private final Figure3T[][] cells = new Figure3T[SIZE][SIZE];
+    /**
+     * logic.
+     */
     private final Logic3T logic = new Logic3T(cells);
 
+    /**
+     * Constructor.
+     * @param x - x.
+     * @param y - y.
+     * @param size - size.
+     * @return new Figure3T.
+     */
     private Figure3T buildRectangle(int x, int y, int size) {
         Figure3T rect = new Figure3T();
         rect.setX(x * size);
@@ -32,6 +54,14 @@ public class Tictactoe extends Application {
         rect.setStroke(Color.BLACK);
         return rect;
     }
+
+    /**
+     *  Build marl O.
+     * @param x - x.
+     * @param y - y.
+     * @param size - size.
+     * @return group.
+     */
     private Group buildMarkO(double x, double y, int size) {
         Group group = new Group();
         int radius = size / 2;
@@ -42,6 +72,10 @@ public class Tictactoe extends Application {
         return group;
     }
 
+    /**
+     *  Show Alert.
+     * @param message - message.
+     */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(JOB4J);
@@ -50,6 +84,10 @@ public class Tictactoe extends Application {
         alert.showAndWait();
     }
 
+    /**
+     * Check.
+     * @return result logic.
+     */
     private boolean checkState() {
         boolean gap = this.logic.hasGap();
         if (!gap) {
@@ -58,6 +96,9 @@ public class Tictactoe extends Application {
         return gap;
     }
 
+    /**
+     * is win?
+     */
     private void checkWinner() {
         if (this.logic.isWinnerX()) {
             this.showAlert("Победили Крестики! Начните новую Игру!");
@@ -66,6 +107,13 @@ public class Tictactoe extends Application {
         }
     }
 
+    /**
+     *  Build mark X.
+     * @param x - x.
+     * @param y - y.
+     * @param size - size
+     * @return group.
+     */
     private Group buildMarkX(double x, double y, int size) {
         Group group = new Group();
         group.getChildren().addAll(
@@ -81,6 +129,11 @@ public class Tictactoe extends Application {
         return group;
     }
 
+    /**
+     * Mouse Helper.
+     * @param panel - panel.
+     * @return EventHandler.
+     */
     private EventHandler<MouseEvent> buildMouseEvent(Group panel) {
         return event -> {
             Figure3T rect = (Figure3T) event.getTarget();
@@ -102,6 +155,10 @@ public class Tictactoe extends Application {
         };
     }
 
+    /**
+     *  Build grid.
+     * @return group.
+     */
     private Group buildGrid() {
         Group panel = new Group();
         for (int y = 0; y != this.SIZE; y++) {
@@ -115,6 +172,11 @@ public class Tictactoe extends Application {
         return panel;
     }
 
+    /**
+     * start.
+     * @param stage - s.
+     * @throws Exception -ex.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         BorderPane border = new BorderPane();

@@ -5,8 +5,13 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * Test.
+ */
 public class TictactoeTest {
-
+    /**
+     * test.
+     */
     @Test
     public void whenHasXWinner() {
         Figure3T[][] table = {
@@ -18,6 +23,9 @@ public class TictactoeTest {
         assertThat(login.isWinnerX(), is(true));
     }
 
+    /**
+     * test.
+     */
     @Test
     public void whenHasXHorizontalWinner() {
         Figure3T[][] table = {
@@ -29,6 +37,9 @@ public class TictactoeTest {
         assertThat(login.isWinnerX(), is(true));
     }
 
+    /**
+     * test.
+     */
     @Test
     public void whenHasXVerticalWinner() {
         Figure3T[][] table = {
@@ -40,6 +51,9 @@ public class TictactoeTest {
         assertThat(login.isWinnerX(), is(true));
     }
 
+    /**
+     * test.
+     */
     @Test
     public void whenHasXBackDiagonalWinner() {
         Figure3T[][] table = {
