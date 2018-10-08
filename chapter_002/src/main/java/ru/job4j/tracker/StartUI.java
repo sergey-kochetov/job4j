@@ -47,9 +47,11 @@ public class StartUI {
     /**
      * init starter.
      */
-    private void init() {
+    public void init() {
         do {
-            this.showMenu();
+            if (input instanceof  ConsoleInput) {
+                this.showMenu();
+            }
             String answer = this.input.ask("Введите пункт меню :");
             switch (answer) {
                 case ADD:

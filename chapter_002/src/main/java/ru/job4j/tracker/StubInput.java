@@ -7,18 +7,18 @@ public class StubInput implements Input {
     /**
      * answers.
      */
-    private String[] answers;
+    private final String[] value;
     /**
      * position.
      */
     private int position;
 
     /**
-     * Constructor.
-     * @param answers - answer.
+     * StubInput.
+     * @param value - value.
      */
-    public StubInput(String[] answers) {
-        this.answers = answers;
+    public StubInput(String[] value) {
+        this.value = value;
         this.position = 0;
 
     }
@@ -30,6 +30,6 @@ public class StubInput implements Input {
      */
     @Override
     public String ask(String question) {
-        return null;
+        return this.value[position++];
     }
 }
