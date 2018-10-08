@@ -38,10 +38,20 @@ public class Item {
      * @param desc - description.
      * @param id - Item id.
      */
-    public Item(String name, String desc, long id) {
+    public Item(String name, String desc, String id) {
         this.name = name;
         this.desc = desc;
-        this.id = String.valueOf(id);
+        this.id = id;
+    }
+
+    /**
+     *  Constructor.
+     * @param name - name.
+     * @param desc - description.
+     */
+    public Item(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
     }
 
     /**
@@ -75,4 +85,19 @@ public class Item {
     public void setName(String name) {
         this.name = name;
     }
+
+//    /**
+//     *  String result.
+//     * @return item.
+//     */
+//    @Override
+//    public String toString() {
+//        return "Item{" +
+//                "id='" + id + '\'' +
+//                ", name='" + name + '\'' +
+//                ", desc='" + desc + '\'' +
+//                ", created=" + created +
+//                ", comments=" + Arrays.toString(comments) +
+//                '}';
+//    }
 }

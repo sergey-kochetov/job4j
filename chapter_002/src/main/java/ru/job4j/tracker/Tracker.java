@@ -1,7 +1,5 @@
 package ru.job4j.tracker;
 
-import java.time.temporal.ValueRange;
-
 /**
  * Class Tracker.
  */
@@ -57,26 +55,27 @@ public class Tracker {
     }
 
     /**
-     * Delete item by id.
-     * @param id - id item.
+     *  delete.
+     * @param id - id.
+     * @return checked.
      */
-    public void delete(String id) {
+    public boolean delete(String id) {
         for (int i = 0; i < position; i++) {
             if (items[i].getId().equals(id)) {
                 removeElement(this.items, i);
-                break;
+                return true;
             }
         }
+        return false;
 
     }
-
     /**
      * Find all item NotNull.
      * @return - array item.
      */
     public Item[] findAll() {
         Item[] result = new Item[position];
-        System.arraycopy(this.items, 0, result, 0, position - 1);
+        System.arraycopy(this.items, 0, result, 0, position);
         return result;
     }
 
@@ -86,20 +85,20 @@ public class Tracker {
      * @return - items array.
      */
     public Item[] findByName(String name) {
+        Item[] result = new Item[position];
         int count = 0;
-        for (int i = 0; i < this.items.length; i++) {
+        for (int i = 0; i < this.findAll().length; i++) {
             if (items[i].getName().equals(name)) {
+                result[count] = items[i];
                 count++;
             }
         }
-        Item[] result = new Item[count];
-        count = 0;
-        for (int i = 0; i < this.items.length; i++) {
-            if (items[i].getName().equals(name)) {
-                result[count] = this.items[i];
-                count++;
-            }
+        if (count > 0) {
+            System.arraycopy(result, 0, result, 0, position);
+        } else {
+            return null;
         }
+
         return result;
     }
 
@@ -109,7 +108,7 @@ public class Tracker {
      * @return - index found.
      */
     public Item findById(String id) {
-        for (Item i : this.items) {
+        for (Item i : this.findAll()) {
             if (i.getId().equals(id)) {
                 return i;
             }
@@ -124,9 +123,9 @@ public class Tracker {
     private String generateId() {
         long minId = 1L;
         long maxId = 1_000_000L;
-        // long generatedId = minId + (long) (Math.random() * (maxId - minId));
+        long generatedId = minId + (long) (Math.random() * (maxId - minId));
         // Реализовать метод генерации.
-        return ValueRange.of(minId, maxId).toString();
+        return String.valueOf(generatedId);
     }
 
     /**
@@ -136,5 +135,6 @@ public class Tracker {
      */
     private void removeElement(Item[] arr, int removedIdx) {
         System.arraycopy(arr, removedIdx + 1, arr, removedIdx, arr.length - 1 - removedIdx);
+        position--;
     }
 }
