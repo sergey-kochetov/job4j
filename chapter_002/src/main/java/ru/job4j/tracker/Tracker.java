@@ -73,7 +73,7 @@ public class Tracker {
      * Find all item NotNull.
      * @return - array item.
      */
-    public Item[] findAll() {
+    public Item[] getAll() {
         Item[] result = new Item[position];
         System.arraycopy(this.items, 0, result, 0, position);
         return result;
@@ -87,7 +87,7 @@ public class Tracker {
     public Item[] findByName(String name) {
         Item[] result = new Item[position];
         int count = 0;
-        for (int i = 0; i < this.findAll().length; i++) {
+        for (int i = 0; i < this.getAll().length; i++) {
             if (items[i].getName().equals(name)) {
                 result[count] = items[i];
                 count++;
@@ -108,7 +108,7 @@ public class Tracker {
      * @return - index found.
      */
     public Item findById(String id) {
-        for (Item i : this.findAll()) {
+        for (Item i : this.getAll()) {
             if (i.getId().equals(id)) {
                 return i;
             }
