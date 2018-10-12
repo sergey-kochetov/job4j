@@ -25,7 +25,7 @@ public class ConvertList2Array {
         return result;
     }
 
-    public List<Integer> toList (int[][] arrays){
+    public List<Integer> toList (int[][] arrays) {
         List<Integer> result = new ArrayList<>();
         for (int[] array : arrays) {
             for (int i : array) {
@@ -34,4 +34,15 @@ public class ConvertList2Array {
         }
         return result;
     }
+
+    public List<Integer> convert (List<int[]> list) {
+        List<Integer> result = new ArrayList<>();
+        for (int[] arr : list) {
+            for (Integer i : arr) {
+                result.add(i);
+            }
+        }
+        return result;
+    }
+
 }
