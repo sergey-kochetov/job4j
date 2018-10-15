@@ -2,53 +2,113 @@ package ru.job4j.search.bank;
 
 import java.util.*;
 
+/**
+ * Bank.
+ */
 public class Bank {
+    /**
+     * customers map.
+     */
     private Map<User, List<Account>> customers;
 
+    /**
+     * Constructor.
+     */
     public Bank() {
         this.customers = new HashMap<>();
     }
 
+    /**
+     * Add user.
+     * @param user - user
+     */
     public void addUser(User user) {
-        //Objects.requireNonNull(user);
-        List<Account> accounts = new ArrayList<>();
-        this.customers.putIfAbsent(user, accounts);
+        Objects.requireNonNull(user);
+        this.customers.putIfAbsent(user, null);
 
     }
 
+    /**
+     * Delete user.
+     * @param user - user
+     */
     public void deleteUser(User user) {
         Objects.requireNonNull(user);
         this.customers.remove(user);
 
     }
 
+    /**
+     * Add account.
+     * @param passport - passport
+     * @param account - account
+     */
     public void addAccountToUser(String passport, Account account) {
-       List<Account> list = this.getUserAccounts(passport);
-        System.out.println(list.indexOf(account));
-       if (-1 == list.indexOf(account)) {
-
-           this.customers.get(this.getUserByPassport(passport)).add(account);
-       }
-    }
-
-    public void deleteAccountFromUser(String passport, Account account) {
-        List<Account> list = this.getUserAccounts(passport);
-        if (-1 != list.indexOf(account)) {
-            list.remove(account);
+        for (Map.Entry<User, List<Account>> entry: this.customers.entrySet()) {
+            User user = entry.getKey();
+            List<Account> list = entry.getValue();
+            if (user.getPassport().equals(passport)) {
+                if (list == null) {
+                    list = new ArrayList<>();
+                    list.add(account);
+                    this.customers.putIfAbsent(user, list);
+                    break;
+                }
+                list.add(account);
+                this.customers.putIfAbsent(user, list);
+                break;
+            }
         }
+    }
+    /**
+     * Delete account.
+     * @param passport - passport
+     * @param account - account
+     */
+    public void deleteAccountFromUser(String passport, Account account) {
 
+        for (Map.Entry<User, List<Account>> entry: this.customers.entrySet()) {
+            User user = entry.getKey();
+            List<Account> list = entry.getValue();
+
+            if (user.getPassport().equals(passport)) {
+                list.remove(account);
+                this.customers.putIfAbsent(user, list);
+                break;
+            }
+        }
     }
 
+    /**
+     *  Get.
+     * @param passport - passport
+     * @return List accounts
+     */
     public List<Account> getUserAccounts (String passport) {
-        User user = getUserByPassport(passport);
-        //Objects.requireNonNull(user);
-        return this.customers.get(user);
+         for (Map.Entry<User, List<Account>> entry: this.customers.entrySet()) {
+            User user = entry.getKey();
+            List<Account> list = entry.getValue();
+            if (user.getPassport().equals(passport)) {
+                return list;
+            }
+        }
+        return new ArrayList<>();
+        //throw new NullPointerException("passport not exist");
     }
 
+    /**
+     *  Transfer.
+     * @param srcPassport - source passport
+     * @param srcRequisite - source requisite
+     * @param destPassport  - dest passport
+     * @param dstRequisite - dest requisite
+     * @param amount - money for transfer
+     * @return - return true/false
+     */
     public boolean transferMoney (String srcPassport, String srcRequisite, String destPassport, String dstRequisite, double amount) {
         boolean result = false;
-        Account srcAccount = this.getAccountByRequisite(srcPassport);
-        Account destAccount = this.getAccountByRequisite(destPassport);
+        Account srcAccount = this.getAccountByRequisite(srcPassport, srcRequisite);
+        Account destAccount = this.getAccountByRequisite(destPassport, dstRequisite);
         Objects.requireNonNull(srcAccount);
         Objects.requireNonNull(destAccount);
 
@@ -60,14 +120,13 @@ public class Bank {
         return result;
     }
 
+    /**
+     *  Return user by passport.
+     * @param passport - passport
+     * @return user
+     */
     private User getUserByPassport(String passport) {
-
-        customers.forEach((a,b) ->
-                System.out.println("user: " + a + ". list: " + b));
-
-
         for (User user : this.customers.keySet()) {
-
             if (user.getPassport().equals(passport)) {
                 return user;
             }
@@ -75,28 +134,27 @@ public class Bank {
         throw new NullPointerException();
     }
 
-    public Account getAccountByRequisite(String requisite) {
-        Account result = null;
-        for (Account acc : this.getUserAccounts(requisite)) {
+    /**
+     * Return user account by requisite.
+     * @param passport - user passport
+     * @param requisite - account requisite
+     * @return account
+     */
+    public Account getAccountByRequisite(String passport, String requisite) {
+        User user = getUserByPassport(passport);
+        for (Account acc : this.customers.get(user)) {
             if (acc.getRequisites().equals(requisite)) {
-                result = acc;
-                break;
+                return acc;
             }
         }
-        return result;
+        throw new NullPointerException("requisite not exist");
     }
 
-    public static void main(String[] args) {
-        Bank bank = new Bank();
-        User user1 = new User("name1", "passport1");
-        Account account1 = new Account(1.0d, "req1");
-        bank.addUser(user1);
-        bank.addAccountToUser("passport1", account1);
-       // final double result = bank.getAccountByRequisite("req1").getValue();
-       // final double expected = 1.0d;
-
-        //System.out.println(result);
-
-
+    /**
+     * Getter.
+     * @return customers
+     */
+    public Map<User, List<Account>> getCustomers() {
+        return customers;
     }
 }
